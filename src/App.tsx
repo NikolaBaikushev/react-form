@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <form>
-        <div class=>
+        <div>
           <label htmlFor="username">Username: </label>
           <input name='username' value={username} onChange={onUsernameChange}></input>
         </div>

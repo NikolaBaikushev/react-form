@@ -1,10 +1,12 @@
 import { useState } from "react"
-import LoginForm from "./LoginForm"
-import RegisterForm from "./RegisterForm";
+import LoginForm, { type LoginUserPayload } from "./LoginForm"
+import RegisterForm, { type RegisterUserPayload } from "./RegisterForm";
 import type { LoggedUser } from "../App";
 
+
 type FormProps = {
-    onLoginSuccess: (user: LoggedUser) => void;
+    onLoginSuccess: (user: LoginUserPayload) => void;
+    onRegisterSuccess: (payload: RegisterUserPayload) => void;
 }
 
 
@@ -31,7 +33,7 @@ export const isFormValid = (errors: ErrorsState): boolean => {
     return Object.values(errors).every(field => field.messages.size === 0)
 }
 
-export const Form = (props: FormProps) => {
+export const Form = ({onRegisterSuccess, onLoginSuccess}: FormProps) => {
     const [showLogin, setShowLogin] = useState(false);
 
     const handleShowRegister = () => {
@@ -42,10 +44,19 @@ export const Form = (props: FormProps) => {
         setShowLogin(true)
     }
 
-    if (showLogin) {
-        return (<LoginForm onLoginSuccess={props.onLoginSuccess} onRegisterClick={handleShowRegister}/>)
+    const handleRegisterSuccess = (payload: RegisterUserPayload) => {
+        onRegisterSuccess(payload);
+        setShowLogin(true);
     }
 
-    return (<RegisterForm onLoginClick={handleShowLogin} onRegisterSuccess={handleShowLogin}/>)
+    const handleLoginSuccess = (payload: LoginUserPayload) => {
+        onLoginSuccess(payload);
+    }
+
+    if (showLogin) {
+        return (<LoginForm onRegisterClick={handleShowRegister} onLoginSuccess={handleLoginSuccess}/>)
+    }
+
+    return (<RegisterForm onLoginClick={handleShowLogin} onRegisterSuccess={handleRegisterSuccess}/>)
 
 }

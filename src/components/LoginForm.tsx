@@ -8,11 +8,14 @@ import PasswordIcon from "./PasswordIcon"
 
 
 type LoginFormProps = {
-    onLoginSuccess: (user: LoggedUser) => void
+    onLoginSuccess: (payload: LoginUserPayload) => void
     onRegisterClick: () => void
 }
 
-
+export type LoginUserPayload = {
+    username: string,
+    password: string,
+}
 
 const LoginForm = ({ onLoginSuccess, onRegisterClick }: LoginFormProps) => {
     const [username, setUsername] = useState('');
@@ -66,12 +69,12 @@ const LoginForm = ({ onLoginSuccess, onRegisterClick }: LoginFormProps) => {
     const onSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-
         if (isFormValid(errors)) {
-            const loggedUser: LoggedUser = {
-                username
-            }
-            onLoginSuccess!(loggedUser);
+            const payload: LoginUserPayload = {
+                username,
+                password,
+            };
+            onLoginSuccess(payload);
         }
     };
 

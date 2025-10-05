@@ -5,10 +5,15 @@ import { useDebouncer } from "../hooks/useDebouncer";
 import PasswordIcon from "./PasswordIcon";
 
 type RegisterFormProps = {
-    onRegisterSuccess: () => void;
+    onRegisterSuccess: (payload: RegisterUserPayload) => void;
     onLoginClick: () => void;
 }
 
+
+export type RegisterUserPayload = {
+    username: string,
+    password: string
+}
 
 
 const RegisterForm = ({ onRegisterSuccess, onLoginClick }: RegisterFormProps) => {
@@ -129,7 +134,13 @@ const RegisterForm = ({ onRegisterSuccess, onLoginClick }: RegisterFormProps) =>
         setErrors(updatedErrors);
 
         if (password && confirmPassword && username && isFormValid(updatedErrors)) {
-            onRegisterSuccess();
+            const payload: RegisterUserPayload = {
+                username,
+                password,
+            };
+
+            onRegisterSuccess(payload);
+            
         }
     }
 
